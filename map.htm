@@ -30,7 +30,7 @@
     //创建地图函数：
     function createMap(){
         var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
-        var point = new BMap.Point(112.430651,32.425772);//定义一个中心点坐标
+        var point = new BMap.Point(112.437551,32.39385);//定义一个中心点坐标
         map.centerAndZoom(point,13);//设定地图的中心点和坐标并将地图显示在地图容器中
         window.map = map;//将map变量存储在全局
     }
@@ -46,19 +46,20 @@
     //地图控件添加函数：
     function addMapControl(){
         //向地图中添加缩放控件
-	var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
-	map.addControl(ctrl_nav);
+    var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+    map.addControl(ctrl_nav);
         //向地图中添加缩略图控件
-	var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
-	map.addControl(ctrl_ove);
+    var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
+    map.addControl(ctrl_ove);
         //向地图中添加比例尺控件
-	var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
-	map.addControl(ctrl_sca);
+    var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+    map.addControl(ctrl_sca);
     }
     
     //标注点数组
-    var markerArr = [{title:"王庄镇金色田园秸秆厂",content:"河南省新野县金色田园秸秆加工厂河南省新野县金色田园花生米加工厂，地处河南省新野县王庄镇，占地面积8.5余亩，年产生物质颗粒燃料1万吨，此燃料主要用于取代锅炉燃煤，属国家新能源开发项目，具有节能环保可再生利用。并常年经营中华五号、白沙系列分级筛选花生米、通货米、油料米。",point:"112.435899|32.393142",isOpen:1,icon:{w:21,h:21,l:0,t:0,x:6,lb:5}}
-		 ];
+    var markerArr = [{title:"新野县金色田园秸秆厂",content:"联系地址：&nbsp;<br/>河南省新野县王庄镇244省道88公里处（邮编:&nbsp;473525）<br/>&nbsp;<br/>联系电话：&nbsp;<br/>13949324051（张焕青）&nbsp;<br/>18637778958（张立）",point:"112.435741|32.392821",isOpen:0,icon:{w:21,h:21,l:0,t:0,x:6,lb:5}}
+         ,{title:"我的标记",content:"我的备注",point:"481.417235|-9.546079",isOpen:0,icon:{w:21,h:21,l:0,t:0,x:6,lb:5}}
+         ];
     //创建marker
     function addMarker(){
         for(var i=0;i<markerArr.length;i++){
@@ -66,39 +67,39 @@
             var p0 = json.point.split("|")[0];
             var p1 = json.point.split("|")[1];
             var point = new BMap.Point(p0,p1);
-			var iconImg = createIcon(json.icon);
+            var iconImg = createIcon(json.icon);
             var marker = new BMap.Marker(point,{icon:iconImg});
-			var iw = createInfoWindow(i);
-			var label = new BMap.Label(json.title,{"offset":new BMap.Size(json.icon.lb-json.icon.x+10,-20)});
-			marker.setLabel(label);
+            var iw = createInfoWindow(i);
+            var label = new BMap.Label(json.title,{"offset":new BMap.Size(json.icon.lb-json.icon.x+10,-20)});
+            marker.setLabel(label);
             map.addOverlay(marker);
             label.setStyle({
                         borderColor:"#808080",
                         color:"#333",
                         cursor:"pointer"
             });
-			
-			(function(){
-				var index = i;
-				var _iw = createInfoWindow(i);
-				var _marker = marker;
-				_marker.addEventListener("click",function(){
-				    this.openInfoWindow(_iw);
-			    });
-			    _iw.addEventListener("open",function(){
-				    _marker.getLabel().hide();
-			    })
-			    _iw.addEventListener("close",function(){
-				    _marker.getLabel().show();
-			    })
-				label.addEventListener("click",function(){
-				    _marker.openInfoWindow(_iw);
-			    })
-				if(!!json.isOpen){
-					label.hide();
-					_marker.openInfoWindow(_iw);
-				}
-			})()
+            
+            (function(){
+                var index = i;
+                var _iw = createInfoWindow(i);
+                var _marker = marker;
+                _marker.addEventListener("click",function(){
+                    this.openInfoWindow(_iw);
+                });
+                _iw.addEventListener("open",function(){
+                    _marker.getLabel().hide();
+                })
+                _iw.addEventListener("close",function(){
+                    _marker.getLabel().show();
+                })
+                label.addEventListener("click",function(){
+                    _marker.openInfoWindow(_iw);
+                })
+                if(!!json.isOpen){
+                    label.hide();
+                    _marker.openInfoWindow(_iw);
+                }
+            })()
         }
     }
     //创建InfoWindow
@@ -109,7 +110,7 @@
     }
     //创建一个Icon
     function createIcon(json){
-        var icon = new BMap.Icon("http://map.baidu.com/image/us_cursor.gif", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
+        var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w,json.h),{imageOffset: new BMap.Size(-json.l,-json.t),infoWindowOffset:new BMap.Size(json.lb+5,1),offset:new BMap.Size(json.x,json.h)})
         return icon;
     }
     
